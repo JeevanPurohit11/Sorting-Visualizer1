@@ -1,6 +1,10 @@
 
 
 
+function reset() {
+	location.reload();
+}
+
 
 function Disable_The_Input() {
 	let x = document.getElementsByTagName("input");
@@ -19,4 +23,8 @@ function Finished_Sorting() {
 	for (let i = 0; i < x.length; i++)
 		x[i].disabled = false;
 
+}
+
+function Sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }

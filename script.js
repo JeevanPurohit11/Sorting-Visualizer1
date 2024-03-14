@@ -28,3 +28,39 @@ function Finished_Sorting() {
 function Sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+async function SelectionSort() {
+	let delay = Disable_The_Input();
+
+	let container = document.getElementById("container");
+	for (let i = 0; i < bars.length; i++) {
+		let mn_ind = i;
+		let curr_id = bars[i].split('id="')[1].split('"')[0];
+		document.getElementById(curr_id).style.backgroundColor = selected;
+		let sound = MapRange(document.getElementById(curr_id).style.height.split('%')[0], 2, 100, 500, 1000);
+		beep(100, sound, delay)
+		for (let j = i + 1; j < bars.length; j++) {
+			let nxt_ele = bars[j].split('id="')[1].split('"')[0];
+			document.getElementById(nxt_ele).style.backgroundColor = chng;
+			let a = parseInt(bars[mn_ind].split(/[:%]/)[1]);
+			let b = parseInt(bars[j].split(/[:%]/)[1]);
+			if (a > b) mn_ind = j;
+			await Sleep(delay / 5.0);
+			document.getElementById(nxt_ele).style.backgroundColor = def;
+		}
+
+		let nxt_ele = bars[mn_ind].split('id="')[1].split('"')[0];
+		document.getElementById(nxt_ele).style.backgroundColor = selected;
+		await Sleep(2 * delay / 5.0);
+
+		let tmp = bars[mn_ind];
+		bars[mn_ind] = bars[i];
+		bars[i] = tmp;
+
+		container.innerHTML = bars.join('');
+		await Sleep(2 * delay / 5.0);
+		document.getElementById(curr_id).style.backgroundColor = def;
+		document.getElementById(nxt_ele).style.backgroundColor = def;
+	}
+	Finished_Sorting();
+}

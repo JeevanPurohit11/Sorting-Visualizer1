@@ -103,3 +103,34 @@ async function BubbleSort() {
 	Finished_Sorting();
 }
 
+//3rd
+async function InsertionSort() {
+	let delay = Disable_The_Input();
+	let container = document.getElementById("container");
+	for (let i = 1; i < bars.length; i++) {
+		let j = i - 1;
+		let key = bars[i];
+		let curr_id = key.split('id="')[1].split('"')[0];
+		let nxt_ele = bars[j].split('id="')[1].split('"')[0];
+		document.getElementById(curr_id).style.backgroundColor = selected;
+		let sound = MapRange(document.getElementById(curr_id).style.height.split('%')[0], 2, 100, 500, 1000);
+		beep(100, sound, delay)
+		while (j >= 0 && parseInt(bars[j].split(/[:%]/)[1]) > parseInt(key.split(/[:%]/)[1])) {
+			document.getElementById(nxt_ele).style.backgroundColor = def;
+			nxt_ele = bars[j].split('id="')[1].split('"')[0];
+			document.getElementById(nxt_ele).style.backgroundColor = chng;
+			await Sleep(delay);
+			bars[j + 1] = bars[j];
+			j--;
+		}
+
+		bars[j + 1] = key;
+		container.innerHTML = bars.join('');
+		document.getElementById(curr_id).style.backgroundColor = selected;
+		document.getElementById(nxt_ele).style.backgroundColor = chng;
+		await Sleep(delay * 3.0 / 5);
+		document.getElementById(curr_id).style.backgroundColor = def;
+		document.getElementById(nxt_ele).style.backgroundColor = def;
+	}
+	Finished_Sorting();
+}

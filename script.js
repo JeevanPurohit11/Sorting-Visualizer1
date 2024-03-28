@@ -134,3 +134,65 @@ async function InsertionSort() {
 	}
 	Finished_Sorting();
 }
+//4th
+function Slide_down(l, r) {
+	let temp = bars[r];
+	for (let i = r - 1; i >= l; i--) {
+		bars[i + 1] = bars[i];
+	}
+	bars[l] = temp;
+}
+
+
+async function merge(l, m, r, d) {
+	let y = l;
+	let i = l;
+	let j = m + 1;
+
+	while (i < j && j <= r) {
+		let curr_id = bars[j].split('id="')[1].split('"')[0];
+		let nxt_ele = bars[i].split('id="')[1].split('"')[0];
+		document.getElementById(curr_id).style.backgroundColor = selected;
+		document.getElementById(nxt_ele).style.backgroundColor = chng;
+		let a = parseInt(bars[j].split(/[:%]/)[1]);
+		let b = parseInt(bars[i].split(/[:%]/)[1]);
+
+		if (a > b) i++;
+		else {
+			Slide_down(i, j);
+			i++; j++;
+		}
+		await Sleep(d / 2.0);
+		container.innerHTML = bars.join('');
+		document.getElementById(curr_id).style.backgroundColor = selected;
+		document.getElementById(nxt_ele).style.backgroundColor = chng;
+		let sound = MapRange(document.getElementById(curr_id).style.height.split('%')[0], 2, 100, 500, 1000);
+		beep(100, sound, d)
+		await Sleep(d / 2.0);
+		document.getElementById(curr_id).style.backgroundColor = def;
+		document.getElementById(nxt_ele).style.backgroundColor = def;
+		sound = MapRange(document.getElementById(curr_id).style.height.split('%')[0], 2, 100, 500, 1000);
+		beep(100, sound, d)
+	}
+}
+
+
+async function mergeSort(l, r, d) {
+	if (l < r) {
+		let m = parseInt(l + (r - l) / 2);
+		await mergeSort(l, m, d);
+		await mergeSort(m + 1, r, d);
+		await merge(l, m, r, d);
+	}
+}
+
+
+
+async function MergeSort() {
+	let delay = Disable_The_Input();
+	await mergeSort(0, bars.length - 1, delay);
+	Finished_Sorting();
+}
+
+
+
